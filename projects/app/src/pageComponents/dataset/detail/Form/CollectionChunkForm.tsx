@@ -136,14 +136,7 @@ const CollectionChunkForm = ({ form }: { form: UseFormReturn<CollectionChunkForm
   const indexPrefixTitle = watch('indexPrefixTitle');
   const paragraphChunkAIMode = watch('paragraphChunkAIMode');
   const imageIndexConfigState = useMemo(() => {
-    if (!feConfigs?.isPlus) {
-      return {
-        disabled: true,
-        tooltip: t('common:commercial_function_tip'),
-        tip: t('dataset:image_auto_parse_tip_commercial')
-      };
-    }
-
+    // 图片索引能力由向量模型/VLM 配置决定，不再受商业版闸门限制
     if (datasetDetail.vectorModel?.vision && datasetDetail.vlmModel) {
       return {
         disabled: false,
@@ -173,7 +166,7 @@ const CollectionChunkForm = ({ form }: { form: UseFormReturn<CollectionChunkForm
       tooltip: t('dataset:image_auto_parse_tip_no_vlm_or_multimodal'),
       tip: t('dataset:image_auto_parse_tip_no_vlm_or_multimodal')
     };
-  }, [datasetDetail.vectorModel?.vision, datasetDetail.vlmModel, feConfigs?.isPlus, t]);
+  }, [datasetDetail.vectorModel?.vision, datasetDetail.vlmModel, t]);
 
   const trainingModeList = useMemo(() => {
     const list = {

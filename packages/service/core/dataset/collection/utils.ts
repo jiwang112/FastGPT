@@ -223,21 +223,19 @@ export const getTrainingModeByCollection = ({
   imageIndex?: boolean;
   supportImageIndex?: boolean;
 }) => {
-  if (
-    trainingType === DatasetCollectionDataProcessModeEnum.imageParse &&
-    global.feConfigs?.isPlus
-  ) {
+  // 图片索引能力由模型配置决定，不再受商业版闸门限制
+  if (trainingType === DatasetCollectionDataProcessModeEnum.imageParse) {
     return TrainingModeEnum.imageParse;
   }
 
   if (trainingType === DatasetCollectionDataProcessModeEnum.qa) {
     return TrainingModeEnum.qa;
   }
+  // 文档集合开启图片索引且模型支持时，走图片向量模式（不再受商业版闸门限制）
   if (
     trainingType === DatasetCollectionDataProcessModeEnum.chunk &&
     imageIndex &&
-    supportImageIndex &&
-    global.feConfigs?.isPlus
+    supportImageIndex
   ) {
     return TrainingModeEnum.image;
   }

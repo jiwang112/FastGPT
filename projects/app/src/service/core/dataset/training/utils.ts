@@ -1,5 +1,6 @@
 import { generateQA } from '@/service/core/dataset/queues/generateQA';
 import { generateVector } from '@/service/core/dataset/queues/generateVector';
+import { generateImageIndex } from '@/service/core/dataset/queues/generateImageIndex';
 import { TrainingModeEnum } from '@fastgpt/global/core/dataset/constants';
 import { type DatasetTrainingSchemaType } from '@fastgpt/global/core/dataset/type';
 import { MongoDatasetTraining } from '@fastgpt/service/core/dataset/training/schema';
@@ -19,6 +20,9 @@ export const createDatasetTrainingMongoWatch = () => {
           generateVector();
         } else if (mode === TrainingModeEnum.parse) {
           datasetParseQueue();
+        } else if (mode === TrainingModeEnum.image || mode === TrainingModeEnum.imageParse) {
+          // VLM 图片描述索引消费者：识别图片生成文本描述，再转 chunk 向量化
+          generateImageIndex();
         }
       }
     } catch (error) {}
@@ -32,5 +36,6 @@ export const startTrainingQueue = (fast?: boolean) => {
     generateQA();
     generateVector();
     datasetParseQueue();
+    generateImageIndex();
   }
 };

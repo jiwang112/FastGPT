@@ -150,7 +150,8 @@ const buildEmbeddingSafeIndexTexts = async ({
 const isImageEmbeddingIndex = (index: DatasetDataIndexDraft) =>
   index.type === DatasetDataIndexTypeEnum.imageEmbedding;
 
-const normalizeDatasetIndexImageToModelInput = async (imageUrl: string) => {
+// 复用：图片源归一化为 VLM 可识别的 base64（支持 S3 key dataset/temp/chat 与 http(s) URL）
+export const normalizeDatasetIndexImageToModelInput = async (imageUrl: string) => {
   if (
     isS3ObjectKey(imageUrl, 'dataset') ||
     isS3ObjectKey(imageUrl, 'temp') ||
